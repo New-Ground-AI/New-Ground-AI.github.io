@@ -248,11 +248,23 @@ The `/projects/` redirect declares `/publication/` as its canonical and uses
 `sitemap: false`. Google ownership verification stays published, unchanged,
 and is omitted from the sitemap.
 
+The sitemap lists HTML content pages, not resume PDFs. Rui Song's reserved Talk
+and Service pages remain accessible but use `sitemap: false` and `noindex: true`.
+When those sections contain real content, remove those two flags, link the pages
+from navigation, and update the explicit `NOINDEX` allowlist in the checker.
+
 `listed: false` only hides a page from content lists. It does **not** prevent
 publication or indexing. The reusable project and member templates are excluded
 from the build by their exact source paths in `_config.yml`. Copy a template to
 a new slug to publish a real page; keep private drafts outside the published
 source or explicitly exclude them.
+
+Published papers keep their formal `title` for lists and the visible subtitle.
+An optional `seo_title` supplies a concise browser/search title. Render authors
+with `_includes/paper-authors.html`: exact profile names link automatically;
+verified name variations belong in the member's `author_names` list. Authors
+without a matching profile remain plain text. `equal_contributors` preserves
+the paper's contribution markers.
 
 After a production build, run:
 

@@ -1,5 +1,6 @@
 ---
 title: Xiangyu (Daniel) Kong
+author_names: [Xiangyu Kong]
 sort_name: Kong, Xiangyu
 role: Research Engineer
 institution: RBC Borealis

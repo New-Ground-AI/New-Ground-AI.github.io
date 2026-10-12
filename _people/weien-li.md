@@ -1,5 +1,6 @@
 ---
 title: Weien (Barry) Li
+author_names: [Weien Li]
 sort_name: Li, Weien
 hex_label: WL
 role: Machine Learning Scientist

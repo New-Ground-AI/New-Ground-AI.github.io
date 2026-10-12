@@ -6,6 +6,7 @@ listed: true
 date: 2026-07-15
 permalink: /projects/discrete-diffusion/
 title: "Discrete Diffusion Models: A Unified Framework from Tokenization to Generation"
+seo_title: "Discrete Diffusion Models: Tokenization to Generation"
 year: 2026
 summary: "A tokenization-centric survey that treats discrete diffusion as one design space, from how the state space is built through training, sampling, systems, and evaluation."
 research_area: Discrete Diffusion
@@ -49,7 +50,7 @@ keywords:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ page.summary | escape }}">
-  <title>Discrete Diffusion — {{ site.title }}</title>
+  <title>{{ page.seo_title | default: page.title | escape }} — {{ site.title }}</title>
   {% include seo-canonical.html %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
@@ -88,6 +89,7 @@ keywords:
     <header class="dd-band">
       <p class="eyebrow">Algorithm · From tokenization to generation</p>
       <h1>Discrete Diffusion</h1>
+      <p class="paper-title">{{ page.title | escape }}</p>
       <p>{{ page.summary }}</p>
       <p class="dd-meta">
         <span>{{ page.venue }}</span>
@@ -95,6 +97,10 @@ keywords:
         <a href="https://huggingface.co/papers/2607.13431" target="_blank" rel="noopener noreferrer">Hugging Face ↗</a>
         <a href="https://github.com/New-Ground-AI/Discrete-Diffusion" target="_blank" rel="noopener noreferrer">Code ↗</a>
       </p>
+      <div class="paper-author-list">
+        <span class="paper-author-label">Authors</span>
+        <p>{% include paper-authors.html %}</p>
+      </div>
     </header>
     <section class="dd-parts" aria-label="Four shared components">
       <article class="dd-part">

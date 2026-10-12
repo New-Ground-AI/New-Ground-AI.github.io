@@ -29,7 +29,8 @@ keywords:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ page.summary | escape }}">
-  <title>{{ page.title }} — {{ site.title }}</title>
+  <title>{{ page.seo_title | default: page.title | escape }} — {{ site.title }}</title>
+  {% include seo-canonical.html %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <!-- Replace or extend styles freely. This page is not bound to the on-going Markdown layout. -->
@@ -46,7 +47,7 @@ keywords:
       </div>
       <aside class="detail-hero__aside">
         <dl>
-          <dt>Authors</dt><dd>{{ page.authors | join: ' · ' }}</dd>
+          <dt>Authors</dt><dd>{% include paper-authors.html %}</dd>
           <dt>Venue</dt><dd>{{ page.venue }}</dd>
           <dt>Research area</dt><dd>{{ page.research_area }}</dd>
           <dt>Links</dt><dd>{{ page.links }}</dd>

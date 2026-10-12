@@ -1,5 +1,6 @@
 ---
 title: Zixuan (Olivia) Dong
+author_names: [Zixuan Dong]
 sort_name: Dong, Zixuan
 role: AI Engineer
 institution: Next Pathway
