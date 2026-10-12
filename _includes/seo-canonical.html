@@ -1,0 +1,2 @@
+{% assign canonical_path = page.canonical_url | default: page.url %}
+<link rel="canonical" href="{{ canonical_path | absolute_url | escape }}">

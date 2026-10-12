@@ -1,7 +1,9 @@
 title: New Ground AI
 description: Advanced · Analytical · Adaptive · Adventurous · Aspiring
-url: ""
+url: "https://new-ground-ai.github.io"
 baseurl: ""
+plugins:
+  - jekyll-sitemap
 lang: en
 markdown: kramdown
 kramdown:
@@ -16,6 +18,14 @@ collections:
     permalink: /people/:name/
 
 defaults:
+  - scope:
+      path: "assets/**/*.pdf"
+    values:
+      sitemap: false
+  - scope:
+      path: "google*.html"
+    values:
+      sitemap: false
   - scope:
       path: ""
       type: projects
@@ -38,4 +48,8 @@ exclude:
   - node_modules
   - vendor
   - people/member-template
+  - projects/project-template
+  - _projects/ongoing-project-template.md
+  - publication/project-template
+  - scripts
 

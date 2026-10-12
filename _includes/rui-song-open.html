@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ page.description | default: 'Rui Song — personal academic site.' | escape }}">
   <title>{% if page.rui_section and page.rui_section != "about" %}{{ page.title }} | {% endif %}Rui Song</title>
+  {% include seo-canonical.html %}
+  {% if page.noindex == true %}<meta name="robots" content="noindex">{% endif %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/people/rui-song/site/css/site.css' | relative_url }}">
 </head>

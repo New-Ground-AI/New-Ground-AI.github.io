@@ -239,6 +239,34 @@ Then refresh the browser (hard-refresh if the tab icon looks stale).
 
 Restart `jekyll serve` after editing `_config.yml`. The watcher does not reload collections, so People can render empty until the server is restarted.
 
+## Search discovery and indexing
+
+`jekyll-sitemap` generates `/sitemap.xml` at build time. The production origin is
+set in `_config.yml`; `/robots.txt` allows crawling and declares that sitemap.
+Formal pages use `_includes/seo-canonical.html` once inside their `<head>`.
+The `/projects/` redirect declares `/publication/` as its canonical and uses
+`sitemap: false`. Google ownership verification stays published, unchanged,
+and is omitted from the sitemap.
+
+`listed: false` only hides a page from content lists. It does **not** prevent
+publication or indexing. The reusable project and member templates are excluded
+from the build by their exact source paths in `_config.yml`. Copy a template to
+a new slug to publish a real page; keep private drafts outside the published
+source or explicitly exclude them.
+
+After a production build, run:
+
+```powershell
+bundle exec jekyll build
+python scripts/check_seo.py _site
+```
+
+The checker validates sitemap coverage, canonical targets, indexing directives,
+robots rules, content links, navigation from Home, and the verification file.
+It derives required member/project URLs from source files instead of fixing a
+member count. Pull requests run the same checks without deploying. Only a
+successful build from `main` can deploy.
+
 ## Deployment
 
 Push to `main` to run `.github/workflows/pages.yml`. The workflow builds the Jekyll source and deploys `_site` to GitHub Pages.
