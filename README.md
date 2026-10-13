@@ -241,12 +241,27 @@ Restart `jekyll serve` after editing `_config.yml`. The watcher does not reload 
 
 ## Search discovery and indexing
 
-`jekyll-sitemap` generates `/sitemap.xml` at build time. The production origin is
-set in `_config.yml`; `/robots.txt` allows crawling and declares that sitemap.
+The tracked root `sitemap.xml` is a Liquid template. Jekyll renders it into
+`_site/sitemap.xml` at build time and deploys it at `/sitemap.xml`; `_site/` stays
+untracked. `jekyll-sitemap` detects this template and does not replace it. The
+production origin is set in `_config.yml`; `/robots.txt` allows crawling and
+declares that sitemap.
 Formal pages use `_includes/seo-canonical.html` once inside their `<head>`.
 The `/projects/` redirect declares `/publication/` as its canonical and uses
 `sitemap: false`. Google ownership verification stays published, unchanged,
 and is omitted from the sitemap.
+
+The template keeps the plugin's URL inclusion rules but only emits `<lastmod>`
+when content supplies an explicit `last_modified_at` date. Update that field
+only after a significant change to content, structured data, or links. If a
+reliable modification date is unknown, omit it. Do not substitute a build time,
+file checkout time, or the paper's publication date: those can falsely suggest
+that unchanged pages were updated on every deployment.
+
+A valid live sitemap does not guarantee that Google has fetched or processed
+it. If Search Console reports "Couldn't fetch", inspect the sitemap's error
+details and run its live URL test; a successful browser request alone does not
+resolve Google's report. Follow the [official troubleshooting steps](https://support.google.com/webmasters/answer/7451001).
 
 The sitemap lists HTML content pages, not resume PDFs. Rui Song's reserved Talk
 and Service pages remain accessible but use `sitemap: false` and `noindex: true`.
