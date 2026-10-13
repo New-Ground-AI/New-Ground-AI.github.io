@@ -6,6 +6,7 @@ listed: true
 date: 2026-08-21
 permalink: /projects/quack/
 title: "QUACK: Questioning, Understanding, and Auditing Communicated Knowledge in Multimodal Social Deduction Agents"
+seo_title: "QUACK: Multimodal Social Deduction Agent Evaluation"
 year: 2026
 summary: "An open-source environment and evaluation framework that audits whether agent language is grounded in what the agent actually perceived and did."
 research_area: Social Deduction
@@ -42,7 +43,8 @@ keywords:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ page.summary | escape }}">
-  <title>QUACK — {{ site.title }}</title>
+  <title>{{ page.seo_title | default: page.title | escape }} — {{ site.title }}</title>
+  {% include seo-canonical.html %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
@@ -75,12 +77,17 @@ keywords:
     <header class="quack-band">
       <p class="eyebrow" style="color: var(--sage);">Evaluation · Grounded social agents</p>
       <h1>QUACK</h1>
+      <p class="paper-title">{{ page.title | escape }}</p>
       <p>{{ page.summary }}</p>
       <p class="quack-meta">
         <span>{{ page.venue }}</span>
         <a href="https://arxiv.org/abs/2605.27068" target="_blank" rel="noopener noreferrer">Paper ↗</a>
         <a href="https://github.com/New-Ground-AI/QUACK" target="_blank" rel="noopener noreferrer">Code ↗</a>
       </p>
+      <div class="paper-author-list">
+        <span class="paper-author-label">Authors</span>
+        <p>{% include paper-authors.html %}</p>
+      </div>
     </header>
     <section class="quack-tiers" aria-label="Three-tier evaluation">
       <article class="quack-tier">

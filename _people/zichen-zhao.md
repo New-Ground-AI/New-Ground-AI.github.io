@@ -1,5 +1,6 @@
 ---
 title: Zichen (Danny) Zhao
+author_names: [Zichen Zhao]
 sort_name: Zhao, Zichen
 role: Undergraduate Student
 institution: MBZUAI

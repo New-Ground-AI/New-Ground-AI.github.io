@@ -6,6 +6,7 @@ listed: true
 date: 2026-08-21
 permalink: /projects/care/
 title: "CARE: Privacy-Compliant Agentic Reasoning with Evidence Discordance"
+seo_title: "CARE: Privacy-Compliant Agentic Reasoning"
 year: 2026
 summary: "A multi-stage agentic framework that reasons over conflicting clinical evidence without sending sensitive patient data to a remote model."
 research_area: Healthcare
@@ -35,7 +36,8 @@ keywords:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ page.summary | escape }}">
-  <title>CARE — {{ site.title }}</title>
+  <title>{{ page.seo_title | default: page.title | escape }} — {{ site.title }}</title>
+  {% include seo-canonical.html %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
@@ -66,6 +68,7 @@ keywords:
       <div>
         <p class="care-kicker">Healthcare · Privacy-compliant agents</p>
         <h1>CARE</h1>
+        <p class="paper-title">{{ page.title | escape }}</p>
         <p class="care-abstract">{{ page.summary }}</p>
         <nav class="care-links" aria-label="Paper links">
           <a href="https://arxiv.org/abs/2604.01113" target="_blank" rel="noopener noreferrer">Paper ↗</a>
@@ -76,7 +79,7 @@ keywords:
           <dt>Venue</dt><dd>{{ page.venue }}</dd>
           <dt>Year</dt><dd>{{ page.year }}</dd>
           <dt>Area</dt><dd>{{ page.research_area }}</dd>
-          <dt>Authors</dt><dd>{{ page.authors | join: ' · ' }}</dd>
+          <dt>Authors</dt><dd>{% include paper-authors.html %}</dd>
         </dl>
       </aside>
     </header>

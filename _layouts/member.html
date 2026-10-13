@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ member_name }} — {{ site.title }}">
   <title>{{ member_name }} — {{ site.title }}</title>
+  {% include seo-canonical.html %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   {% for sheet in page.extra_css %}<link rel="stylesheet" href="{{ sheet | relative_url }}">{% endfor %}

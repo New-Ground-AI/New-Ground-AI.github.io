@@ -1,5 +1,6 @@
 ---
 title: Yonghan (Harry) Yang
+author_names: [Yonghan Yang]
 sort_name: Yang, Yonghan
 role: Undergraduate Student
 institution: MBZUAI

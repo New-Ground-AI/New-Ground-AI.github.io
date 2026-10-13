@@ -6,6 +6,7 @@ listed: true
 date: 2026-04-30
 permalink: /projects/spade/
 title: "SPADE: Support-Proximity Augmented Diffusion Estimation for Offline Black-Box Optimization"
+seo_title: "SPADE: Offline Black-Box Optimization"
 year: 2026
 summary: "A forward diffusion surrogate for offline black-box optimization that stays calibrated on the data manifold and conservative where the dataset does not support a design."
 research_area: BBO
@@ -34,7 +35,8 @@ keywords:
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="{{ page.summary | escape }}">
-  <title>SPADE — {{ site.title }}</title>
+  <title>{{ page.seo_title | default: page.title | escape }} — {{ site.title }}</title>
+  {% include seo-canonical.html %}
   {% include head-icons.html %}
   <link rel="stylesheet" href="{{ '/assets/css/site.css' | relative_url }}">
   <script src="{{ '/assets/js/site.js' | relative_url }}" defer></script>
@@ -79,6 +81,7 @@ keywords:
       <div>
         <p class="eyebrow">Algorithm · Offline black-box optimization</p>
         <h1>SPADE</h1>
+        <p class="paper-title">{{ page.title | escape }}</p>
         <p class="spade-lead">{{ page.summary }}</p>
         <nav class="spade-links" aria-label="Paper links">
           <a href="https://arxiv.org/abs/2605.11246" target="_blank" rel="noopener noreferrer">Paper ↗</a>
@@ -90,7 +93,7 @@ keywords:
           <dt>Venue</dt><dd>{{ page.venue }}</dd>
           <dt>Year</dt><dd>{{ page.year }}</dd>
           <dt>Area</dt><dd>{{ page.research_area }}</dd>
-          <dt>Authors</dt><dd>{{ page.authors | join: ' · ' }}</dd>
+          <dt>Authors</dt><dd>{% include paper-authors.html %}</dd>
         </dl>
       </aside>
     </header>

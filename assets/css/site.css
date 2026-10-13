@@ -1846,6 +1846,39 @@ p {
   text-underline-offset: 0.2rem;
 }
 
+.detail-hero .paper-title,
+.quack-band .paper-title,
+.dd-band .paper-title {
+  max-width: 65ch;
+  margin-top: 1rem;
+  font-family: var(--sans);
+  font-size: clamp(0.95rem, 1.3vw, 1.1rem);
+  font-weight: 500;
+  line-height: 1.5;
+  letter-spacing: normal;
+  overflow-wrap: break-word;
+}
+
+.paper-author-list {
+  max-width: 65ch;
+  margin-top: 1.5rem;
+}
+
+.paper-author-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.quack-band .paper-author-list p,
+.dd-band .paper-author-list p {
+  margin-top: 0.5rem;
+  font-family: var(--sans);
+  font-size: 0.85rem;
+  line-height: 1.7;
+}
+
 .project-narrative {
   display: grid;
   grid-template-columns: minmax(0, 0.4fr) minmax(18rem, 1fr);
