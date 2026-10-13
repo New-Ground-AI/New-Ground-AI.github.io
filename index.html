@@ -1,16 +1,21 @@
 ---
 layout: null
 nav: home
+description: New Ground AI is a research collective studying generative models, AI agents, retrieval, alignment, and multimodal intelligence.
+last_modified_at: 2026-10-13T04:30:06Z
 ---
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="New Ground AI — advanced, analytical, adaptive, adventurous and aspiring research.">
+  <meta name="description" content="{{ page.description | escape }}">
+  <meta property="og:site_name" content="{{ site.title | escape }}">
+  <meta property="og:url" content="{{ '/' | absolute_url }}">
   <meta name="theme-color" content="#F2F0E9">
-  <title>New Ground AI</title>
+  <title>{{ site.title | escape }} | AI Research Collective</title>
   {% include seo-canonical.html %}
+  {% include home-identity.html %}
   {% include head-icons.html %}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +35,7 @@ nav: home
         </div>
         <aside class="hero__overview" aria-labelledby="overview-title">
           <h2 id="overview-title">Overview</h2>
-          <p>We build intelligent systems that can act with purpose, learn from change, and grow toward ambitious goals.</p>
+          <p>New Ground AI is a research collective spanning universities, labs, and industry. We study generative models, AI agents, retrieval, alignment, and multimodal intelligence.</p>
         </aside>
       </div>
     </section>

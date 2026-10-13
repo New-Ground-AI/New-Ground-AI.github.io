@@ -266,6 +266,7 @@ p {
 .hero__sensor {
   display: grid;
   width: 100%;
+  min-width: 0;
   grid-template-columns: minmax(0, 1.45fr) minmax(18rem, 0.55fr);
   align-items: start;
   gap: clamp(1.75rem, 4.5vw, 4.5rem);
@@ -2097,18 +2098,26 @@ p {
 }
 
 .reveal {
-  opacity: 0;
-  transform: translateY(1rem);
-  transition: opacity 600ms var(--ease), transform 600ms var(--ease);
+  opacity: 1;
+  transform: none;
 }
 
 .reveal.is-visible {
-  opacity: 1;
-  transform: translateY(0);
+  animation: reveal-in 600ms var(--ease);
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(1rem);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 @media (max-width: 56rem) {
-  .hero__sensor,
   .page-hero,
   .detail-hero,
   .member-hero {
@@ -2116,6 +2125,7 @@ p {
   }
 
   .hero__sensor {
+    grid-template-columns: minmax(0, 1fr);
     gap: 2.25rem;
   }
 
@@ -2347,6 +2357,30 @@ p {
 @media (max-width: 43.75rem) {
   .site-header__inner {
     min-height: 3.85rem;
+    gap: 0.65rem;
+  }
+
+  .site-brand {
+    gap: 0.65rem;
+  }
+
+  .wordmark {
+    gap: 0.4rem;
+    font-size: clamp(0.8rem, 3.6vw, 0.98rem);
+  }
+
+  .wordmark__mark {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .wordmark__name {
+    white-space: nowrap;
+  }
+
+  .site-presence {
+    gap: 0.55rem;
+    padding-left: 0.65rem;
   }
 
   .site-presence__link span {
@@ -2600,12 +2634,6 @@ p {
   }
 }
 
-@media (max-width: 25rem) {
-  .hero h1 {
-    font-size: 16vw;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -2620,9 +2648,11 @@ p {
     animation-iteration-count: 1 !important;
   }
 
-  .reveal {
+  .reveal,
+  .reveal.is-visible {
     opacity: 1;
     transform: none;
+    animation: none;
   }
 
   .publication-ticker {

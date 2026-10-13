@@ -3,6 +3,7 @@
 import argparse
 from collections import deque
 from html.parser import HTMLParser
+import json
 from pathlib import Path
 import re
 import sys
@@ -23,6 +24,12 @@ TEMPLATES = {
 REDIRECTS = {"/projects/": "/publication/"}
 NOINDEX = {"/people/rui-song/site/talk/", "/people/rui-song/site/service/"}
 VERIFICATION = "google64a57d41e321cf13.html"
+BRAND_NAME = "New Ground AI"
+BRAND_PROFILES = {
+    "https://github.com/New-Ground-AI",
+    "https://huggingface.co/5a-community",
+    "https://www.linkedin.com/company/new-ground-ai",
+}
 
 
 class Page(HTMLParser):
@@ -34,19 +41,27 @@ class Page(HTMLParser):
         self.refreshes = []
         self.title = ""
         self.description = ""
+        self.json_ld = []
+        self.open_graph = {}
         self._in_title = False
+        self._json_ld_parts = None
         self.feed(text)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
         if tag == "title":
             self._in_title = True
+        if tag == "script" and attrs.get("type", "").strip().lower() == "application/ld+json":
+            self._json_ld_parts = []
         if tag == "link" and "canonical" in attrs.get("rel", "").lower().split():
             self.canonicals.append(attrs.get("href", ""))
         if tag == "a" and attrs.get("href"):
             self.links.append(attrs["href"])
         if tag == "meta":
             name = attrs.get("name", "").lower()
+            property_name = attrs.get("property", "").lower()
+            if property_name in {"og:site_name", "og:url"}:
+                self.open_graph.setdefault(property_name, []).append(attrs.get("content", ""))
             if name in {"robots", "googlebot"}:
                 self.robots.append(attrs.get("content", "").lower())
             if name == "description":
@@ -57,10 +72,85 @@ class Page(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "title":
             self._in_title = False
+        if tag == "script" and self._json_ld_parts is not None:
+            self.json_ld.append("".join(self._json_ld_parts))
+            self._json_ld_parts = None
 
     def handle_data(self, data):
         if self._in_title:
             self.title += data
+        if self._json_ld_parts is not None:
+            self._json_ld_parts.append(data)
+
+
+def validate_homepage_identity(page, destination, check):
+    """Check published identity facts and references, not search ranking outcomes."""
+    nodes = []
+
+    def collect(value):
+        if isinstance(value, list):
+            for item in value:
+                collect(item)
+        elif isinstance(value, dict):
+            if "@type" in value:
+                nodes.append(value)
+            if "@graph" in value:
+                collect(value["@graph"])
+        else:
+            check(False, "/: JSON-LD must contain objects or arrays of objects")
+
+    for number, body in enumerate(page.json_ld, 1):
+        try:
+            collect(json.loads(body))
+        except json.JSONDecodeError as error:
+            check(False, f"/: invalid JSON-LD block {number}: {error}")
+
+    def find_node(kind):
+        matches = [node for node in nodes
+                   if kind == node.get("@type") or
+                   (isinstance(node.get("@type"), list) and kind in node["@type"])]
+        check(len(matches) == 1, f"/: expected one {kind} JSON-LD entity, found {len(matches)}")
+        return matches[0] if len(matches) == 1 else None
+
+    website = find_node("WebSite")
+    organization = find_node("Organization")
+    canonical = ORIGIN + "/"
+    check(BRAND_NAME.casefold() in " ".join(page.title.split()).casefold(),
+          "/: title must identify New Ground AI")
+    for property_name, expected in {"og:site_name": BRAND_NAME, "og:url": canonical}.items():
+        if property_name in page.open_graph:
+            check(page.open_graph[property_name] == [expected],
+                  f"/: {property_name} must occur once and match {expected}")
+    for kind, node in (("WebSite", website), ("Organization", organization)):
+        if node is None:
+            continue
+        check(node.get("name") == BRAND_NAME, f"/: {kind} name must match {BRAND_NAME}")
+        check(node.get("url") == canonical, f"/: {kind} URL must match {canonical}")
+        identifier = node.get("@id", "")
+        check(isinstance(identifier, str) and identifier.startswith(canonical + "#")
+              and len(identifier) > len(canonical) + 1,
+              f"/: {kind} @id must be an absolute homepage URL with a nonempty fragment")
+    if website is not None and organization is not None:
+        check(website.get("@id") != organization.get("@id"),
+              "/: WebSite and Organization must have distinct @id values")
+        publisher = website.get("publisher")
+        check(isinstance(publisher, dict) and publisher.get("@id") == organization.get("@id"),
+              "/: WebSite publisher must reference the Organization @id")
+    if organization is None:
+        return
+    profiles = organization.get("sameAs", [])
+    valid_profiles = isinstance(profiles, list) and all(isinstance(url, str) for url in profiles)
+    check(valid_profiles and len(profiles) == len(BRAND_PROFILES) and set(profiles) == BRAND_PROFILES,
+          "/: Organization sameAs must contain each verified GitHub, Hugging Face and LinkedIn profile once")
+    logo = organization.get("logo")
+    if isinstance(logo, dict):
+        logo = logo.get("contentUrl") or logo.get("url")
+    valid_logo = isinstance(logo, str) and logo.startswith(ORIGIN + "/")
+    check(valid_logo, "/: Organization logo must use an absolute production URL")
+    if valid_logo:
+        logo_path = (destination / unquote(urlsplit(logo).path).lstrip("/")).resolve()
+        check(logo_path.is_relative_to(destination.resolve()) and logo_path.is_file(),
+              f"/: Organization logo is missing from the build: {logo}")
 
 
 def public_path(path):
@@ -117,6 +207,8 @@ def validate(destination):
         check(path not in pages, f"Template was published: {path}")
     for path in required_urls():
         check(path in pages, f"Required source page is missing: {path}")
+    if "/" in pages:
+        validate_homepage_identity(pages["/"], destination, check)
 
     indexed = set(pages) - set(REDIRECTS) - NOINDEX - {"/404.html"}
     for path, page in pages.items():

@@ -247,6 +247,11 @@ untracked. `jekyll-sitemap` detects this template and does not replace it. The
 production origin is set in `_config.yml`; `/robots.txt` allows crawling and
 declares that sitemap.
 Formal pages use `_includes/seo-canonical.html` once inside their `<head>`.
+The homepage adds `WebSite` and `Organization` JSON-LD through
+`_includes/home-identity.html`. Keep its name, logo, canonical URL, and verified
+profiles consistent with the visible site. Its description comes from homepage
+front matter. Shared Home and wordmark links point directly to `/`. Reveal
+animations enhance content that is visible by default, including without JavaScript.
 The `/projects/` redirect declares `/publication/` as its canonical and uses
 `sitemap: false`. Google ownership verification stays published, unchanged,
 and is omitted from the sitemap.
@@ -288,7 +293,7 @@ bundle exec jekyll build
 python scripts/check_seo.py _site
 ```
 
-The checker validates sitemap coverage, canonical targets, indexing directives,
+The checker validates homepage identity metadata, sitemap coverage, canonical targets, indexing directives,
 robots rules, content links, navigation from Home, and the verification file.
 It derives required member/project URLs from source files instead of fixing a
 member count. Pull requests run the same checks without deploying. Only a
